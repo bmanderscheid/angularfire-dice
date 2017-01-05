@@ -1,0 +1,6 @@
+<div>
+  <button *ngIf="(af.auth | async)" routerLink="game-dashboard">Continue</button>
+  <hr />
+  <button *ngIf="!(af.auth | async)" (click)="login()">Login with Google</button>
+  <button *ngIf="(af.auth | async)" (click)="logout()">Logout</button>
+</div>
