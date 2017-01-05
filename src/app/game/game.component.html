@@ -1,3 +1,50 @@
-<p>
-  game works!
-</p>
+<div id="dice">
+  <div *ngFor="let dice of _dice | async" class="dice">{{dice.$value}}</div>
+  <button [disabled]="!_allowRoll" (click)="roll()">ROLL!</button>
+</div>
+<div id="tricksContainer">
+  <div class="tricks">
+    <div>
+      <div>ones
+        <div class="trick-score">{{ (_tricks | async)?.ones }}</div>
+      </div>
+      <div>twos
+        <div class="trick-score">{{ (_tricks | async)?.twos}}</div>
+      </div>
+      <div>threes
+        <div class="trick-score">{{ (_tricks | async)?.threes}}</div>
+      </div>
+      <div>fours
+        <div class="trick-score">{{ (_tricks | async)?.fours}}</div>
+      </div>
+      <div>fives
+        <div class="trick-score">{{ (_tricks | async)?.fives}}</div>
+      </div>
+      <div>sixes
+        <div class="trick-score">{{ (_tricks | async)?.sixes}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="tricks">
+    <div>
+      <div>ones
+        <div class="trick-score">{{ (_opponentTricks | async)?.ones }}</div>
+      </div>
+      <div>twos
+        <div class="trick-score">{{ (_opponentTricks | async)?.twos}}</div>
+      </div>
+      <div>threes
+        <div class="trick-score">{{ (_opponentTricks | async)?.threes}}</div>
+      </div>
+      <div>fours
+        <div class="trick-score">{{ (_opponentTricks | async)?.fours}}</div>
+      </div>
+      <div>fives
+        <div class="trick-score">{{ (_opponentTricks | async)?.fives}}</div>
+      </div>
+      <div>sixes
+        <div class="trick-score">{{ (_opponentTricks | async)?.sixes}}</div>
+      </div>
+    </div>
+  </div>
+</div>
