@@ -18,7 +18,7 @@ export class GameComponent implements OnInit {
   private _players: Object;
   private _tricks: FirebaseObjectObservable<any>;
   private _opponentTricks: FirebaseObjectObservable<any>;
-  private _dice: FirebaseListObservable<number[]>;
+  private _dice: FirebaseObjectObservable<any>;
   private _currentPlayer: FirebaseObjectObservable<string>;
   private _currentPlayerRolls: FirebaseObjectObservable<number>;
 
@@ -50,17 +50,18 @@ export class GameComponent implements OnInit {
   private getGame(): void {
     this._tricks = this._af.database.object('games/' + this._gameId + '/tricks/' + this._uid);
     this._opponentTricks = this._af.database.object('games/' + this._gameId + '/tricks/' + this._oppId);
-    this._dice = this._af.database.list('games/' + this._gameId + '/dice');
+    this._dice = this._af.database.object('games/' + this._gameId + '/dice');
     this._currentPlayer = this._af.database.object('games/' + this._gameId + '/currentPlayer');
     this._currentPlayerRolls = this._af.database.object('games/' + this._gameId + '/currentPlayerRolls');
 
     this._currentPlayer.subscribe(player => this.evaluateCurrentPlayer(player));
-    this._dice.subscribe(dice => {
-      console.log(this._dice);
-      dice.forEach((value, index) => this._diceValues[index] = value["$value"]);
-      this._diceValues = dice.map((x: any) => {
-        return x.$value;
-      })
+    this._dice.subscribe(snapshot => {
+      //this._diceValues = Object.keys(snapshot.val()).map(key => snapshot.val()[key]);      
+      //this._diceValues[1] = 0;
+
+      // this._diceValues = dice.map((x: any) => {
+      //   return x.$value;
+      // })
     });
   }
 
@@ -73,8 +74,8 @@ export class GameComponent implements OnInit {
     this._allowRoll = false;
     this._diceValues = this._diceValues.map(x => {
       return this.getRandomNumber(1, 6);
-    })    
-    this._currentPlayerRolls.update({ currentPlayerRolls: 3 });    
+    })
+    this._currentPlayerRolls.update({ currentPlayerRolls: 3 });
   }
 
   private getRandomNumber(min, max): number {
