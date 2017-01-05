@@ -23,11 +23,11 @@ export class GameComponent implements OnInit {
   private _currentPlayerRolls: FirebaseObjectObservable<number>;
 
   private _allowRoll: boolean;
-  private _diceValues: number[];
+  private _holdDice: string[];
 
   constructor(private _af: AngularFire, private _route: ActivatedRoute) {
     this._allowRoll = false;
-    this._diceValues = [];
+    this._holdDice = [];
   }
 
   ngOnInit() {
@@ -56,12 +56,6 @@ export class GameComponent implements OnInit {
 
     this._currentPlayer.subscribe(player => this.evaluateCurrentPlayer(player));
     this._dice.subscribe(snapshot => {
-      //this._diceValues = Object.keys(snapshot.val()).map(key => snapshot.val()[key]);      
-      //this._diceValues[1] = 0;
-
-      // this._diceValues = dice.map((x: any) => {
-      //   return x.$value;
-      // })
     });
   }
 
@@ -72,10 +66,14 @@ export class GameComponent implements OnInit {
 
   private roll(): void {
     this._allowRoll = false;
-    this._diceValues = this._diceValues.map(x => {
-      return this.getRandomNumber(1, 6);
-    })
     this._currentPlayerRolls.update({ currentPlayerRolls: 3 });
+    var o: Object = { dice1: this.getRandomNumber(1, 6) }
+    this._dice.update(o);
+  }
+
+  private holdDice(diceKey:string):void{
+    this._holdDice.push(diceKey);
+    console.log(this._holdDice);
   }
 
   private getRandomNumber(min, max): number {
