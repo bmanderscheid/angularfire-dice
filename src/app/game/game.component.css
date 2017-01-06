@@ -1,3 +1,7 @@
+#dice{
+    margin-bottom: 100px;
+}
+
 .dice{
     width:100px;
     height: 100px;
@@ -6,15 +10,18 @@
     margin-left: 10px;
 }
 
+.dice-hold{
+    border: 1px solid blue;
+}
+
 #tricksContainer{
     width:600px;
-    height: 400px;
+    height: 800px;    
 }
 
 .tricks{
     float:left;
-    width:200px;
-    height: 400px;
+    width:200px;    
     background-color: cadetblue;
 }
 

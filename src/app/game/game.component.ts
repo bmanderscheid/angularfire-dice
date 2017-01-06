@@ -24,6 +24,13 @@ export class GameComponent implements OnInit {
 
   private _allowRoll: boolean;
   private _holdDice: string[];
+  private _spinInterval: number;
+
+  private _dice1Hold: boolean = false;
+  private _dice2Hold: boolean = false;
+  private _dice3Hold: boolean = false;
+  private _dice4Hold: boolean = false;
+  private _dice5Hold: boolean = false;
 
   constructor(private _af: AngularFire, private _route: ActivatedRoute) {
     this._allowRoll = false;
@@ -56,26 +63,41 @@ export class GameComponent implements OnInit {
 
     this._currentPlayer.subscribe(player => this.evaluateCurrentPlayer(player));
     this._dice.subscribe(snapshot => {
+      console.log(snapshot);
     });
   }
 
-  private evaluateCurrentPlayer(player: any): void {
+  private evaluateCurrentPlayer(player: any): void {    
     this._allowRoll = player.$value == this._uid;
 
   }
 
   private roll(): void {
     this._allowRoll = false;
-    this._currentPlayerRolls.update({ currentPlayerRolls: 3 });
-    var o: Object = { dice1: this.getRandomNumber(1, 6) }
-    this._dice.update(o);
+    let cnt = 0;
+    this._spinInterval = window.setInterval(() => {
+      this.updateDiceValue();
+      if (++cnt > 15) {
+        window.clearInterval(this._spinInterval);
+        this.evaluateRolls();
+      }
+    }, 50);
   }
 
-  private holdDice(diceKey:string):void{
-    this._holdDice.push(diceKey);
-    console.log(this._holdDice);
+  private updateDiceValue(): void {
+    this._dice.update({ dice1: this.getRandomNumber(1, 6) });
   }
 
+  private holdDice(diceKey: string): void {
+    this['_dice' + diceKey + 'Hold'] = !this['_dice' + diceKey + 'Hold'];
+    console.log(this._dice1Hold);
+  }
+
+  private evaluateRolls(): void {
+
+  }
+
+  //utility
   private getRandomNumber(min, max): number {
     return Math.floor(Math.random() * max) + min;
   }
