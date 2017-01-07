@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
+import { CurrentPlayer } from '../models/current-player.model';
+import { Tricks } from '../models/tricks.model';
 
 import 'rxjs/add/operator/take';
 
@@ -16,11 +18,14 @@ export class GameComponent implements OnInit {
   private _gameId: string
 
   private _players: Object;
+  private _currentPlayer: FirebaseObjectObservable<any>;
   private _tricks: FirebaseObjectObservable<any>;
   private _opponentTricks: FirebaseObjectObservable<any>;
   private _dice: FirebaseObjectObservable<any>;
-  private _currentPlayer: FirebaseObjectObservable<string>;
-  private _currentPlayerRolls: FirebaseObjectObservable<number>;
+
+  private _player: CurrentPlayer;
+  private _playerTricks: Tricks;
+  private _oppTricks: Tricks;
 
   private _allowRoll: boolean;
   private _holdDice: string[];
@@ -59,17 +64,21 @@ export class GameComponent implements OnInit {
     this._opponentTricks = this._af.database.object('games/' + this._gameId + '/tricks/' + this._oppId);
     this._dice = this._af.database.object('games/' + this._gameId + '/dice');
     this._currentPlayer = this._af.database.object('games/' + this._gameId + '/currentPlayer');
-    this._currentPlayerRolls = this._af.database.object('games/' + this._gameId + '/currentPlayerRolls');
+    //this._currentPlayerRolls = this._af.database.object('games/' + this._gameId + '/currentPlayer/playerRolls');
 
-    this._currentPlayer.subscribe(player => this.evaluateCurrentPlayer(player));
-    this._dice.subscribe(snapshot => {
-      console.log(snapshot);
-    });
+    this._currentPlayer.subscribe(currentPlayer => this.evaluateCurrentPlayer(currentPlayer as CurrentPlayer));
+    // this._tricks.subscribe(tricks => {
+    //   this._playerTricks = tricks[this._uid] as Tricks;
+    //   //this._oppTricks = tricks[this._oppId] as Tricks;
+    //   console.log(tricks);
+    // });
   }
 
-  private evaluateCurrentPlayer(player: any): void {    
-    this._allowRoll = player.$value == this._uid;
+  // maybe not evaluate on current player subscribe
 
+  private evaluateCurrentPlayer(currentPlayer: CurrentPlayer): void {
+    this._allowRoll = currentPlayer.player == this._uid && currentPlayer.playerRolls < 3;
+    this._player = currentPlayer as CurrentPlayer;
   }
 
   private roll(): void {
@@ -85,16 +94,26 @@ export class GameComponent implements OnInit {
   }
 
   private updateDiceValue(): void {
-    this._dice.update({ dice1: this.getRandomNumber(1, 6) });
+    let newDiceValues = {};
+    for (let i = 1; i < 6; i++) {
+      if (!this["_dice" + i + "Hold"])
+        newDiceValues['dice' + i] = this.getRandomNumber(1, 6);
+    }
+    this._dice.update(newDiceValues);
   }
 
   private holdDice(diceKey: string): void {
     this['_dice' + diceKey + 'Hold'] = !this['_dice' + diceKey + 'Hold'];
-    console.log(this._dice1Hold);
   }
 
   private evaluateRolls(): void {
+    this._currentPlayer.update({ playerRolls: this._player.playerRolls + 1 });
+    console.log(this._player);
+    //console.log(this._currentPlayerRolls);
+  }
 
+  private playTrick(value: number): void {
+    if (this._player.playerRolls < 1) return;
   }
 
   //utility
