@@ -1,7 +1,7 @@
 export class Tricks {
-    ones: number;
-    twos: number;
-    threes: number;
-    fours: number;
-    fives: number;
+    ones: string;
+    twos: string;
+    threes: string;
+    fours: string;
+    fives: string;
 }

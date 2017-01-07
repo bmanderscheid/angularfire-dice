@@ -5,50 +5,50 @@
     <div [class.dice-hold]="_dice3Hold" class="dice" (click)="holdDice('3')">{{ (_dice | async)?.dice3}}</div>
     <div [class.dice-hold]="_dice4Hold" class="dice" (click)="holdDice('4')">{{ (_dice | async)?.dice4}}</div>
     <div [class.dice-hold]="_dice5Hold" class="dice" (click)="holdDice('5')">{{ (_dice | async)?.dice5}}</div>
-    <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_currentPlayer | async)?.playerRolls }} )</button>
+    <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_currentPlayer$ | async)?.playerRolls }} )</button>
   </div>
   <div id="tricksContainer">
     <div class="tricks">
       <div>
         <div>ones
-          <div class="trick-score" (click)="playTrick(1)">{{ (_tricks | async)?.ones }}</div>
+          <div class="trick-score" (click)="playTrick('ones',1)">{{ _playerTricks?.ones }}</div>
         </div>
         <div>twos
-          <div class="trick-score">{{ (_tricks | async)?.twos}}</div>
+          <div class="trick-score" (click)="playTrick('twos',2)">{{ _playerTricks?.twos }}</div>
         </div>
         <div>threes
-          <div class="trick-score">{{ (_tricks | async)?.threes}}</div>
+          <div class="trick-score" (click)="playTrick('threes',3)">{{ _playerTricks?.threes }}</div>
         </div>
         <div>fours
-          <div class="trick-score">{{ (_tricks | async)?.fours}}</div>
+          <div class="trick-score" (click)="playTrick('fours',4)">{{ _playerTricks?.fours }}</div>
         </div>
         <div>fives
-          <div class="trick-score">{{ (_tricks | async)?.fives}}</div>
+          <div class="trick-score" (click)="playTrick('fives',5)">{{ _playerTricks?.fives }}</div>
         </div>
         <div>sixes
-          <div class="trick-score">{{ (_tricks | async)?.sixes}}</div>
+          <div class="trick-score" (click)="playTrick('sixes',6)">{{ _playerTricks?.sixes }}</div>
         </div>
       </div>
     </div>
     <div class="tricks">
       <div>
         <div>ones
-          <div class="trick-score">{{ (_opponentTricks | async)?.ones }}</div>
+          <div class="trick-score">{{ _oppTricks?.ones }}</div>
         </div>
         <div>twos
-          <div class="trick-score">{{ (_opponentTricks | async)?.twos}}</div>
+          <div class="trick-score">{{ _oppTricks?.twos }}</div>
         </div>
         <div>threes
-          <div class="trick-score">{{ (_opponentTricks | async)?.threes}}</div>
+          <div class="trick-score">{{ _oppTricks?.threes }}</div>
         </div>
         <div>fours
-          <div class="trick-score">{{ (_opponentTricks | async)?.fours}}</div>
+          <div class="trick-score">{{ _oppTricks?.fours }}</div>
         </div>
         <div>fives
-          <div class="trick-score">{{ (_opponentTricks | async)?.fives}}</div>
+          <div class="trick-score">{{ _oppTricks?.fives }}</div>
         </div>
         <div>sixes
-          <div class="trick-score">{{ (_opponentTricks | async)?.sixes}}</div>
+          <div class="trick-score">{{ _oppTricks?.sixes }}</div>
         </div>
       </div>
     </div>
