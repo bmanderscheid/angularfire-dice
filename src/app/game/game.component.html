@@ -4,47 +4,17 @@
     <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_gameState$ | async)?.playerRolls }} )</button>
   </div>
   <div id="tricksContainer">
-    <div class="tricks">
+    <div class="scores">
       <div>
-        <div>ones
-          <div class="trick-score" (click)="playTrick('ones',1)">{{ _playerTricks?.ones }}</div>
-        </div>
-        <div>twos
-          <div class="trick-score" (click)="playTrick('twos',2)">{{ _playerTricks?.twos }}</div>
-        </div>
-        <div>threes
-          <div class="trick-score" (click)="playTrick('threes',3)">{{ _playerTricks?.threes }}</div>
-        </div>
-        <div>fours
-          <div class="trick-score" (click)="playTrick('fours',4)">{{ _playerTricks?.fours }}</div>
-        </div>
-        <div>fives
-          <div class="trick-score" (click)="playTrick('fives',5)">{{ _playerTricks?.fives }}</div>
-        </div>
-        <div>sixes
-          <div class="trick-score" (click)="playTrick('sixes',6)">{{ _playerTricks?.sixes }}</div>
+        <div *ngFor="let score of _playerScores$ | async;let i = index">{{score.label}}
+          <div class="score" (click)="playScore(score.value,i + 1)">{{ score.value }}</div>
         </div>
       </div>
     </div>
-    <div class="tricks">
+    <div class="scores">
       <div>
-        <div>ones
-          <div class="trick-score">{{ _oppTricks?.ones }}</div>
-        </div>
-        <div>twos
-          <div class="trick-score">{{ _oppTricks?.twos }}</div>
-        </div>
-        <div>threes
-          <div class="trick-score">{{ _oppTricks?.threes }}</div>
-        </div>
-        <div>fours
-          <div class="trick-score">{{ _oppTricks?.fours }}</div>
-        </div>
-        <div>fives
-          <div class="trick-score">{{ _oppTricks?.fives }}</div>
-        </div>
-        <div>sixes
-          <div class="trick-score">{{ _oppTricks?.sixes }}</div>
+        <div *ngFor="let score of _oppScores$ | async">{{score.label}}
+          <div class="score">{{ score.value }}</div>
         </div>
       </div>
     </div>

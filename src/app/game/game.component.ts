@@ -16,22 +16,19 @@ import 'rxjs/add/operator/take';
 export class GameComponent implements OnInit {
 
   private _uid: string;
-  private _oppId: string; // put in player manager at some point (image, name, email, etc)
+  private _oppId: string;
   private _gameId: string
 
   private _players: Players;
 
   // firebase observables
   private _gameState$: FirebaseObjectObservable<any>;
-  private _tricks$: FirebaseObjectObservable<any>;
   private _dice$: FirebaseListObservable<any[]>;
-
+  private _oppScores$: FirebaseListObservable<any[]>;
+  private _playerScores$: FirebaseListObservable<any[]>;
 
   private _gameState: GameState;
   private _dice: Dice[];
-  private _playerTricks: Tricks;
-  private _oppTricks: Tricks;
-
   private _allowRoll: boolean;
   private _spinInterval: number;
 
@@ -59,19 +56,17 @@ export class GameComponent implements OnInit {
   }
 
   private getGame(): void {
+    // observables
     this._dice$ = this._af.database.list('games/' + this._gameId + '/dice');
-    this._tricks$ = this._af.database.object('games/' + this._gameId + '/tricks');
     this._gameState$ = this._af.database.object('games/' + this._gameId + '/gameState');
-
+    this._oppScores$ = this._af.database.list('games/' + this._gameId + '/scores/' + this._oppId);
+    this._playerScores$ = this._af.database.list('games/' + this._gameId + '/scores/' + this._uid);
     this._gameState$.subscribe(state => this.evaluateGameState(state as GameState));
-    this._tricks$.subscribe(tricks => {
-      this._playerTricks = tricks[this._uid] as Tricks;
-      this._oppTricks = tricks[this._oppId] as Tricks;
-    });
+
+    //subscribe
     this._dice$.subscribe(value => {
       this._dice = value.map(dice => dice as Dice)
     });
-
   }
 
   private evaluateGameState(state: GameState): void {
@@ -96,7 +91,10 @@ export class GameComponent implements OnInit {
     for (let dice of this._dice) {
       this._dice$.update(dice.$key, { value: dice.hold ? dice.value : this.getNewDiceValue(), hold: dice.hold })
     }
+  }
 
+  private rollComplete(): void {
+    this._gameState$.update({ playerRolls: this._gameState.playerRolls + 1 });
   }
 
   private holdDice(index: string): void {
@@ -104,22 +102,14 @@ export class GameComponent implements OnInit {
     this._dice[index].hold = !this._dice[index].hold;
   }
 
-  private rollComplete(): void {
-    this._gameState$.update({ playerRolls: this._gameState.playerRolls + 1 });
-  }
-
-  private playTrick(diceKey: string, diceValue: number): void {
-    if (this._gameState.playerRolls < 1) return;
+  private playScore(currentScore: string, scoreType: number): void {
+    if (currentScore != "" || this._gameState.playerRolls < 1) return;
     let score: number = this._dice
-      .filter(dice => dice.value == diceValue)
+      .filter(dice => dice.value == scoreType)
       .map(dice => dice.value)
       .reduce((a, b) => a + b, 0);
 
-    // i wonder
-    this._playerTricks[diceKey] = score;
-    let updates: Object = {};
-    updates[this._uid] = this._playerTricks;
-    this._tricks$.update(updates);
+    this._playerScores$.update('score' + scoreType, { value: score });
     this.changePlayer();
   }
 
@@ -135,7 +125,7 @@ export class GameComponent implements OnInit {
   }
 
   private gameOver(): void {
-    
+
   }
 
   //utility
