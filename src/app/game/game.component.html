@@ -1,7 +1,7 @@
-<div>  
+<div>
   <div id="dice">
     <div *ngFor="let dice of _dice; let i = index" [class.dice-hold]="dice.hold" class="dice" (click)="holdDice(i)">{{dice.value}}</div>
-    <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_currentPlayer$ | async)?.playerRolls }} )</button>
+    <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_gameState$ | async)?.playerRolls }} )</button>
   </div>
   <div id="tricksContainer">
     <div class="tricks">
