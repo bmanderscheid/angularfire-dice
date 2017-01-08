@@ -4,6 +4,7 @@ import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'a
 import { CurrentPlayer } from '../models/current-player.model';
 import { Tricks } from '../models/tricks.model';
 import { Players } from '../models/players.model';
+import { Dice } from '../models/dice.model';
 
 import 'rxjs/add/operator/take';
 
@@ -19,24 +20,21 @@ export class GameComponent implements OnInit {
   private _gameId: string
 
   private _players: Players;
+
+  // firebase observables
   private _currentPlayer$: FirebaseObjectObservable<any>;
   private _tricks$: FirebaseObjectObservable<any>;
   //private _opponentTricks: FirebaseObjectObservable<any>;
-  private _dice: FirebaseObjectObservable<any>;
+  private _dice$: FirebaseListObservable<any[]>;
 
   private _currentPlayer: CurrentPlayer;
+  private _dice: Dice[];
   private _playerTricks: Tricks;
   private _oppTricks: Tricks;
 
   private _allowRoll: boolean;
   private _holdDice: string[];
   private _spinInterval: number;
-
-  private _dice1Hold: boolean = false;
-  private _dice2Hold: boolean = false;
-  private _dice3Hold: boolean = false;
-  private _dice4Hold: boolean = false;
-  private _dice5Hold: boolean = false;
 
   constructor(private _af: AngularFire, private _route: ActivatedRoute) {
     this._allowRoll = false;
@@ -62,7 +60,7 @@ export class GameComponent implements OnInit {
 
   private getGame(): void {
     this._tricks$ = this._af.database.object('games/' + this._gameId + '/tricks');
-    this._dice = this._af.database.object('games/' + this._gameId + '/dice');
+    this._dice$ = this._af.database.list('games/' + this._gameId + '/dice');
     this._currentPlayer$ = this._af.database.object('games/' + this._gameId + '/currentPlayer');
 
     this._currentPlayer$.subscribe(currentPlayer => this.evaluateCurrentPlayer(currentPlayer as CurrentPlayer));
@@ -70,6 +68,11 @@ export class GameComponent implements OnInit {
       this._playerTricks = tricks[this._uid] as Tricks;
       this._oppTricks = tricks[this._oppId] as Tricks;
     });
+    this._dice$.subscribe(value => {
+      this._dice = value.map(dice => dice as Dice)
+      console.log(value);
+    });
+
   }
 
   // maybe not evaluate on current player subscribe
@@ -86,50 +89,42 @@ export class GameComponent implements OnInit {
       this.updateDiceValue();
       if (++cnt > 15) {
         window.clearInterval(this._spinInterval);
-        this.evaluateRolls();
+        this.rollComplete();
       }
     }, 50);
   }
 
   private updateDiceValue(): void {
-    let newDiceValues = {};
-    for (let i = 1; i < 6; i++) {
-      if (!this["_dice" + i + "Hold"])
-        newDiceValues['dice' + i] = this.getRandomNumber(1, 6);
+    for (let dice of this._dice) {
+      this._dice$.update(dice.$key, { value: dice.hold ? dice.value : this.getRandomNumber(1, 6), hold: dice.hold })
     }
-    this._dice.update(newDiceValues);
+
   }
 
-  private holdDice(diceKey: string): void {
-    this['_dice' + diceKey + 'Hold'] = !this['_dice' + diceKey + 'Hold'];
+  private holdDice(index: string): void {
+    this._dice[index].hold = !this._dice[index].hold;
   }
 
-  private evaluateRolls(): void {
+  private rollComplete(): void {
     this._currentPlayer$.update({ playerRolls: this._currentPlayer.playerRolls + 1 });
   }
 
   private playTrick(diceKey: string, diceValue: number): void {
-    if (this._playerTricks[diceKey] != "") return;
-    this._allowRoll = false;
-    if (this._currentPlayer.playerRolls < 1) return;
-    var sum: number = 0;
-    this._dice.forEach(value => {
-      for (let i = 1; i < 6; i++) {
-        let n: number = Number(value["dice" + i]);
-        sum += n == diceValue ? n : 0;
-      }
-    });
-    //this._playerTricks[diceKey] = sum;
+    let score: number = this._dice
+      .filter(dice => dice.value == diceValue)
+      .map(dice => dice.value)
+      .reduce((a, b) => a + b, 0);
+
+    // i wonder
+    this._playerTricks[diceKey] = score;
     let updates: Object = {};
-    updates[this._uid] = {};
-    updates[diceKey] = sum;
+    updates[this._uid] = this._playerTricks;
     this._tricks$.update(updates);
-    this._currentPlayer$.update({ playerRolls: 0 });
     this.changePlayer();
   }
 
   private changePlayer(): void {
-    this._dice1Hold = this._dice2Hold = this._dice3Hold = this._dice4Hold = this._dice5Hold = false;
+    //this._dice1Hold = this._dice2Hold = this._dice3Hold = this._dice4Hold = this._dice5Hold = false;
     let update: Object = {};
     update[this._oppId] =
       this._currentPlayer$.update({ player: this._oppId, playerRolls: 0 });

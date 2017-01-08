@@ -1,10 +1,6 @@
-<div>
+<div>  
   <div id="dice">
-    <div [class.dice-hold]="_dice1Hold" class="dice" (click)="holdDice('1')">{{ (_dice | async)?.dice1}}</div>
-    <div [class.dice-hold]="_dice2Hold" class="dice" (click)="holdDice('2')">{{ (_dice | async)?.dice2}}</div>
-    <div [class.dice-hold]="_dice3Hold" class="dice" (click)="holdDice('3')">{{ (_dice | async)?.dice3}}</div>
-    <div [class.dice-hold]="_dice4Hold" class="dice" (click)="holdDice('4')">{{ (_dice | async)?.dice4}}</div>
-    <div [class.dice-hold]="_dice5Hold" class="dice" (click)="holdDice('5')">{{ (_dice | async)?.dice5}}</div>
+    <div *ngFor="let dice of _dice; let i = index" [class.dice-hold]="dice.hold" class="dice" (click)="holdDice(i)">{{dice.value}}</div>
     <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_currentPlayer$ | async)?.playerRolls }} )</button>
   </div>
   <div id="tricksContainer">
