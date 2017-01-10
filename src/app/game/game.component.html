@@ -3,6 +3,10 @@
     <div *ngFor="let dice of _dice; let i = index" [class.dice-hold]="dice.hold" class="dice" (click)="holdDice(i)">{{dice.value}}</div>
     <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_gameState$ | async)?.playerRolls }} )</button>
   </div>
+  <div id="playersContainer">
+    <img class="profile-pic" src="{{(_playerInfo$ | async)?.photoURL}}" /> {{(_playerInfo$ | async)?.displayName}}
+    <img class="profile-pic" src="{{(_oppInfo$ | async)?.photoURL}}" />{{(_playerInfo$ | async)?.displayName}}
+  </div>
   <div id="tricksContainer">
     <div class="scores">
       <div>

@@ -14,7 +14,8 @@ export class HomeComponent implements OnInit {
     this.af.auth.subscribe(auth => {
       let user: Object = {};
       user[auth.uid] = auth.google;
-      this.af.database.object('users').update(user);
+      this.af.database.object('users').update(user);      
+      
     });
   }
 
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   logout() {
-
+    this.af.auth.logout();
   }
 
 }

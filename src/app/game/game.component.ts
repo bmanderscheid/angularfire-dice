@@ -21,6 +21,8 @@ export class GameComponent implements OnInit {
   private _players: Players;
 
   // firebase observables
+  private _playerInfo$: FirebaseObjectObservable<any>;
+  private _oppInfo$: FirebaseObjectObservable<any>;
   private _gameState$: FirebaseObjectObservable<any>;
   private _dice$: FirebaseListObservable<any[]>;
   private _oppScores$: FirebaseListObservable<any[]>;
@@ -51,8 +53,12 @@ export class GameComponent implements OnInit {
   private getPlayers(): void {
     let players = this._af.database.object('games/' + this._gameId + '/players', { preserveSnapshot: true }).take(1);
     players.subscribe(snapshot => {
-      this._players = snapshot.val() as Players;
-      this._oppId = this._players.player1 == this._uid ? this._players.player2 : this._players.player1;
+      this._oppId = snapshot.val().player1 == this._uid ? snapshot.val().player2 : snapshot.val().player1;
+      // set up player info
+      this._playerInfo$ = this._af.database.object('users/' + this._uid);
+      this._oppInfo$ = this._af.database.object('users/' + this._oppId);
+
+      // start game
       this.getGame();
     });
   }
