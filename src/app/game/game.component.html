@@ -9,6 +9,7 @@
         <div *ngFor="let score of _playerScores$ | async;let i = index">{{score.label}}
           <div class="score" (click)="playScore(score.value,i + 1)">{{ score.value }}</div>
         </div>
+        <div>{{_playerTotalScore}}</div>
       </div>
     </div>
     <div class="scores">
@@ -16,6 +17,7 @@
         <div *ngFor="let score of _oppScores$ | async">{{score.label}}
           <div class="score">{{ score.value }}</div>
         </div>
+        <div>{{_oppTotalScore}}</div>
       </div>
     </div>
   </div>

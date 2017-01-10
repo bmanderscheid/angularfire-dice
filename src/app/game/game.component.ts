@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 import { GameState } from '../models/game-state.model';
-import { Tricks } from '../models/tricks.model';
 import { Players } from '../models/players.model';
 import { Dice } from '../models/dice.model';
 
@@ -28,6 +27,8 @@ export class GameComponent implements OnInit {
   private _playerScores$: FirebaseListObservable<any[]>;
 
   private _gameState: GameState;
+  private _playerTotalScore: number;
+  private _oppTotalScore;
   private _dice: Dice[];
   private _allowRoll: boolean;
   private _spinInterval: number;
@@ -35,6 +36,7 @@ export class GameComponent implements OnInit {
   private GAME_TOTAL_MOVES: number = 12;
 
   constructor(private _af: AngularFire, private _route: ActivatedRoute) {
+    this._playerTotalScore = this._oppTotalScore = 0;
     this._allowRoll = false;
   }
 
@@ -67,6 +69,8 @@ export class GameComponent implements OnInit {
     this._dice$.subscribe(value => {
       this._dice = value.map(dice => dice as Dice)
     });
+    this._playerScores$.subscribe(value => this._playerTotalScore = this.getTotalScore(value));
+    this._oppScores$.subscribe(value => this._oppTotalScore = this.getTotalScore(value));
   }
 
   private evaluateGameState(state: GameState): void {
@@ -133,5 +137,11 @@ export class GameComponent implements OnInit {
     return Math.floor(Math.random() * 6) + 1;
   }
 
+  private getTotalScore(scores: any[]): number {
+    return scores
+      .filter(x => x.value != "")
+      .map(value => value.value)
+      .reduce((a, b) => a + b, 0);
+  }
 
 }
