@@ -1,19 +1,46 @@
-<div>
-  <div id="dice">
-    <div *ngFor="let dice of _dice; let i = index" [class.dice-hold]="dice.hold" class="dice" (click)="holdDice(i)">{{dice.value}}</div>
-    <button [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_gameState$ | async)?.playerRolls }} )</button>
-  </div>
+<div id="gameContainer">
   <div id="playersContainer">
-    <img class="profile-pic" src="{{(_playerInfo$ | async)?.photoURL}}" /> {{(_playerInfo$ | async)?.displayName}}
-    <img class="profile-pic" src="{{(_oppInfo$ | async)?.photoURL}}" />{{(_playerInfo$ | async)?.displayName}}
+    <div class="player">
+      <div class="player-header">
+        {{(_playerInfo$ | async)?.displayName}}
+      </div>
+      <img class="profile-pic" src="{{(_playerInfo$ | async)?.photoURL}}" />
+      <div class="player-score">
+        <h1>{{_playerTotalScore}}</h1>
+      </div>
+    </div>
+    <div class="player">
+      <div class="player-header">
+        {{(_oppInfo$ | async)?.displayName}}
+      </div>
+      <img class="profile-pic" src="{{(_oppInfo$ | async)?.photoURL}}" />
+      <div class="player-score">
+        <h1>{{_oppTotalScore}}</h1>
+      </div>
+    </div>
   </div>
+  <div id="dice">
+    <img *ngFor="let dice of _dice; let i = index" [class.dice-hold]="dice.hold" class="dice" (click)="holdDice(i)" src="assets/d{{dice.value}}.png"
+    />
+  </div>
+  <button class="roll-button" [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_gameState$ | async)?.playerRolls }} )</button>
+  <div id="scoresContainer">
+ss
+</div>
+
+</div>
+
+
+
+<!--<div>
+
+  
   <div id="tricksContainer">
     <div class="scores">
       <div>
         <div *ngFor="let score of _playerScores$ | async;let i = index">{{score.label}}
           <div class="score" (click)="playScore(score.value,i + 1)">{{ score.value }}</div>
         </div>
-        <div>{{_playerTotalScore}}</div>
       </div>
     </div>
     <div class="scores">
@@ -21,8 +48,8 @@
         <div *ngFor="let score of _oppScores$ | async">{{score.label}}
           <div class="score">{{ score.value }}</div>
         </div>
-        <div>{{_oppTotalScore}}</div>
+
       </div>
     </div>
   </div>
-</div>
+</div>-->

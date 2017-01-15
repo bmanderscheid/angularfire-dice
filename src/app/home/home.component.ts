@@ -11,11 +11,8 @@ export class HomeComponent implements OnInit {
   constructor(private af: AngularFire) { }
 
   ngOnInit() {
-    this.af.auth.subscribe(auth => {
-      let user: Object = {};
-      user[auth.uid] = auth.google;
-      this.af.database.object('users').update(user);      
-      
+    this.af.auth.subscribe(auth => {      
+      this.af.database.object('users/' + auth.uid + '/info').update(auth.google);
     });
   }
 

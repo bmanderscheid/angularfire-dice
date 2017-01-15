@@ -1,0 +1,23 @@
+.active-game{
+    width:360px;
+    height: 80px;
+    background-color: deeppink;
+    padding:5px;
+}
+
+img{
+    height: 80px;
+    float: left;
+}
+
+h3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: white;
+    margin-bottom:2px;
+}
+
+.opp-details{
+    float: left;
+    margin-left: 10px;
+}

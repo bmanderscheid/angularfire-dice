@@ -1,25 +1,82 @@
-.profile-pic{
-    width:100px;
+#gameContainer{
+    background-color: cornflowerblue;
+    border: black 1px solid;
+    padding:10px;
+    width:400px;
+    height: 500px;    
 }
+
+#playerContainer{
+    
+}
+
+.player{
+    width:190px;
+    height:112px;
+    background-color: pink;
+    float: left;
+    margin-right:10px;
+}
+
+.player-header{
+    width:186px;
+    height:18px;
+    background-color:greenyellow;
+    padding:2px;
+    font-size:13px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.profile-pic{
+    height: 90px;
+}
+
+.player-score{
+    width: 100px;
+    height: 90px;
+    background-color: cyan;
+    float: right;
+    
+}
+
+.player-score h1{
+    text-align: center;
+    margin-top: 10px;
+    color: white;
+}
+
 #dice{
-    margin-bottom: 100px;
+    margin-top:120px;    
+    width:390px;              
 }
 
 .dice{
-    width:100px;
-    height: 100px;
-    background-color: pink;
+    width:71px;    
     float:left;
-    margin-left: 10px;
+    margin-right: 7px;
 }
 
 .dice-hold{
-    border: 1px solid blue;
+    opacity: .5;
 }
+
+.roll-button{
+    width: 400px;
+    font-size: 20px;
+}
+
+#scoresContainer{
+    width:400px;
+    height: 260px;    
+    margin-top:10px;
+    background-color: lightslategray;
+}
+
+
 
 #tricksContainer{
     width:600px;
-    height: 800px;    
+    height: 400px;    
 }
 
 .scores{
