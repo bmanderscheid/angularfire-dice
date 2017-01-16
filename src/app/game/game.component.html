@@ -19,37 +19,23 @@
       </div>
     </div>
   </div>
+  <!--<div id="scoresContainer">-->
+    <div class="playerScores">
+      <div *ngFor="let score of _playerScores$ | async;let i = index" class="player-score-row">
+        <span class="score-label">{{score.label}}</span>
+        <div class="score" (click)="playScore(score.value,i + 1)">{{ score.value }}</div>
+      </div>
+    </div>
+    <div class="playerScores">
+      <div *ngFor="let score of _oppScores$ | async" class="player-score-row">
+        <span class="score-label">{{score.label}}</span>
+        <div class="score">{{ score.value }}</div>
+      </div>
+    </div>
+  <!--</div>-->
   <div id="dice">
     <img *ngFor="let dice of _dice; let i = index" [class.dice-hold]="dice.hold" class="dice" (click)="holdDice(i)" src="assets/d{{dice.value}}.png"
     />
   </div>
   <button class="roll-button" [disabled]="!_allowRoll" (click)="roll()">ROLL({{ (_gameState$ | async)?.playerRolls }} )</button>
-  <div id="scoresContainer">
-ss
 </div>
-
-</div>
-
-
-
-<!--<div>
-
-  
-  <div id="tricksContainer">
-    <div class="scores">
-      <div>
-        <div *ngFor="let score of _playerScores$ | async;let i = index">{{score.label}}
-          <div class="score" (click)="playScore(score.value,i + 1)">{{ score.value }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="scores">
-      <div>
-        <div *ngFor="let score of _oppScores$ | async">{{score.label}}
-          <div class="score">{{ score.value }}</div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>-->
