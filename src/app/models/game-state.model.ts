@@ -1,6 +1,6 @@
 export class GameState {
     player: string;
-    playerRolls: number;
+    playerRollsLeft: number;
     totalPlays: number;
     $key: string;
 }

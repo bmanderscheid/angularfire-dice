@@ -79,7 +79,7 @@ export class GameComponent implements OnInit {
   private evaluateGameState(state: GameState): void {
     this._gameState = state as GameState;
     if (this.checkForGameOver(state.totalPlays)) this.gameOver();
-    else this._allowRoll = state.player == this._uid && state.playerRolls < 3;
+    else this._allowRoll = state.player == this._uid && state.playerRollsLeft > 0;
   }
 
   private roll(): void {
@@ -101,16 +101,16 @@ export class GameComponent implements OnInit {
   }
 
   private rollComplete(): void {
-    this._gameState$.update({ playerRolls: this._gameState.playerRolls + 1 });
+    this._gameState$.update({ playerRollsLeft: this._gameState.playerRollsLeft - 1 });
   }
 
   private holdDice(index: string): void {
-    if (this._gameState.playerRolls < 1) return;
+    if (this._gameState.playerRollsLeft < 1) return;
     this._dice[index].hold = !this._dice[index].hold;
   }
 
   private playScore(currentScore: string, scoreType: number): void {
-    if (currentScore != "" || this._gameState.playerRolls < 1) return;
+    if (currentScore != "" || this._gameState.playerRollsLeft > 2) return;
     let score: number = this._dice
       .filter(dice => dice.value == scoreType)
       .map(dice => dice.value)
@@ -124,7 +124,7 @@ export class GameComponent implements OnInit {
     for (let dice of this._dice) {
       if (dice.hold) this._dice$.update(dice.$key, { hold: false });
     }
-    this._gameState$.update({ player: this._oppId, playerRolls: 0, totalPlays: this._gameState.totalPlays + 1 });
+    this._gameState$.update({ player: this._oppId, playerRollsLeft: 3, totalPlays: this._gameState.totalPlays + 1 });
   }
 
   private checkForGameOver(moves: number): boolean {

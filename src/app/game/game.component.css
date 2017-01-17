@@ -6,8 +6,10 @@
     height: 500px;    
 }
 
-#playerContainer{
-    margin-bottom: 100px;
+#playersContainer{    
+    float: left;
+    /*background-color:hotpink;*/
+    height: 112px;
 }
 
 .player{
@@ -45,42 +47,24 @@
     color: white;
 }
 
-#dice{
-    margin-top:120px;    
-    width:390px;              
-}
-
-.dice{
-    width:71px;    
-    float:left;
-    margin-right: 7px;
-}
-
-.dice-hold{
-    opacity: .5;
-}
-
-.roll-button{
-    width: 400px;
-    font-size: 20px;
-}
-
-#scoresContainer{
-    width:400px;
-    height: 260px;    
+#scoresContainer{    
+    height: 260px;        
+    /*background-color: lightslategray;*/
+    clear: both;
+    float: left;
     margin-top:10px;
-    background-color: lightslategray;
 }
 
 .playerScores{
-    width:180px;
+    width:190px;
     height: 260px;        
     background-color:orange;
     float:left;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 .player-score-row{
-    width: 180px;
+    /*width: 180px;*/
+    width:100%;
     height: 40px;
     margin-bottom: 4px;
     background-color: lightgoldenrodyellow;    
@@ -98,4 +82,25 @@
     background-color: yellowgreen;        
     float: right;
     text-align: center;
+}
+
+#dice{    
+    float: left;
+    margin-top:10px;
+    width:390px;              
+}
+
+.dice{
+    width:71px;    
+    float:left;
+    margin-left: 6px;
+}
+
+.dice-hold{
+    opacity: .5;
+}
+
+.roll-button{
+    width: 390px;
+    font-size: 20px;
 }
