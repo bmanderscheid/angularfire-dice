@@ -1,5 +1,5 @@
 #gameContainer{
-    background-color: cornflowerblue;
+    background-color: #355C7D;
     border: black 1px solid;
     padding:10px;
     width:400px;
@@ -8,25 +8,25 @@
 
 #playersContainer{    
     float: left;
-    /*background-color:hotpink;*/
     height: 112px;
 }
 
 .player{
     width:190px;
     height:112px;
-    background-color: pink;
+    background-color: #f8b195;
     float: left;
     margin-right:10px;
 }
 
 .player-header{
-    width:186px;
+    color: white;
+    width:184px;
     height:18px;
-    background-color:greenyellow;
-    padding:2px;
+    background-color:#c06c84;
+    padding:3px;
     font-size:13px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
 .profile-pic{
@@ -36,7 +36,8 @@
 .player-score{
     width: 100px;
     height: 90px;
-    background-color: cyan;
+    font-size:24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     float: right;
     
 }
@@ -58,7 +59,7 @@
 .playerScores{
     width:190px;
     height: 260px;        
-    background-color:orange;
+    /*background-color:orange;*/
     float:left;
     margin-right: 10px;
 }
@@ -67,21 +68,23 @@
     width:100%;
     height: 40px;
     margin-bottom: 4px;
-    background-color: lightgoldenrodyellow;    
+    background-color: #f67280;    
     
 }
 .score-label{
-    font-size:24px;
-    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size:20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     float: left;
     margin:6px 6px;
 }
 .score{
     width:40px;
     height: 40px;
-    background-color: yellowgreen;        
+    background-color: #f8b195;       
     float: right;
     text-align: center;
+    color: white;
 }
 
 #dice{    
