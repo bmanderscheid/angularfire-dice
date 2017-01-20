@@ -1,8 +1,11 @@
 .active-game{
     width:360px;
     height: 80px;
-    background-color: deeppink;
+    background-color: #355C7D;
+    border: white 1px solid;
     padding:5px;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
 
 img{
@@ -10,9 +13,16 @@ img{
     float: left;
 }
 
-h3{
+h1{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
+    color: white;
+    margin-bottom:2px;
+
+}
+h3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
     color: white;
     margin-bottom:2px;
 }

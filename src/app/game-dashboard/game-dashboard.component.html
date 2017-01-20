@@ -2,7 +2,7 @@
   <div class="active-game" *ngFor="let game of _games$ | async"  [routerLink]="['/game', game.$key]">
     <img src="{{game.opp.photoURL}}" />
     <div class="opp-details">
-      <h3>{{game.opp.displayName}}</h3>
+      <h1>{{game.opp.displayName}}</h1>
       <h3>{{game.currentPlayer == _uid ? "Your Turn" : "Their Turn"}}</h3>
     </div>
   </div>

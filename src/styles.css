@@ -1,3 +1,8 @@
 body{
     background-color: #f8b195;
 }
+
+h1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;                                                       
+}
