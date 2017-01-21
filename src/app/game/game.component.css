@@ -9,6 +9,7 @@
 #playersContainer{    
     float: left;
     height: 112px;
+    overflow:hidden;
 }
 
 .player{
@@ -26,11 +27,11 @@
     background-color:#c06c84;
     padding:3px;
     font-size:13px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .profile-pic{
-    height: 90px;
+    height: 88px;
 }
 
 .player-score{
@@ -85,6 +86,8 @@
     float: right;
     text-align: center;
     color: white;
+    font-size:28px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
 #dice{    
